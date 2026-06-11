@@ -1,0 +1,537 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background: radial-gradient(circle at top, #ff9acb, #8b5cf6, #111827);
+  color: white;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Stars */
+.stars::before,
+.stars::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 70px 70px, 120px 120px;
+  animation: starsMove 20s linear infinite;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stars::after {
+  animation-duration: 35s;
+  opacity: 0.25;
+}
+
+@keyframes starsMove {
+  to {
+    transform: translateY(130px);
+  }
+}
+
+/* Floating hearts */
+.floating-hearts::before,
+.floating-hearts::after {
+  content: "💕 💖 💗 💘 ❤️";
+  position: fixed;
+  bottom: -80px;
+  width: 100%;
+  font-size: 28px;
+  animation: floatLine 10s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.floating-hearts::after {
+  left: 35%;
+  animation-delay: 5s;
+}
+
+@keyframes floatLine {
+  to {
+    transform: translateY(-120vh);
+  }
+}
+
+/* Card */
+.card {
+  position: relative;
+  z-index: 5;
+  width: 92%;
+  max-width: 620px;
+  max-height: 92vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 35px;
+  text-align: center;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 35px rgba(255, 255, 255, 0.25),
+    0 30px 80px rgba(0, 0, 0, 0.35);
+  animation: glow 2.5s infinite alternate;
+}
+
+.card::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes glow {
+  to {
+    box-shadow:
+      0 0 55px rgba(255, 130, 200, 0.8),
+      0 30px 90px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.sparkle {
+  font-size: 34px;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card h1 {
+  font-size: 40px;
+  margin: 12px 0;
+}
+
+.card p {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+#messageText {
+  min-height: 55px;
+  transition: 0.4s;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  padding: 13px 24px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  touch-action: manipulation;
+}
+
+/* Dodge box */
+.reject-game-box {
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.18);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.15);
+}
+
+.reject-game-box h3 {
+  margin-bottom: 8px;
+  color: #fff6a9;
+}
+
+#attemptCounter {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+#rejectFunnyMsg {
+  min-height: 24px;
+  color: #ffd6e8;
+  font-weight: bold;
+}
+
+/* Accept */
+#acceptBtn {
+  margin-top: 20px;
+  background: white;
+  color: #ff4f8b;
+  box-shadow: 0 0 25px white;
+  transition: 0.3s;
+}
+
+#acceptBtn:hover {
+  transform: scale(1.1);
+}
+
+/* Reject button */
+#rejectBtn {
+  position: fixed;
+  left: calc(50% + 150px);
+  top: calc(50% + 120px);
+  z-index: 9999;
+  background: #222;
+  color: white;
+  transition: left 0.18s linear, top 0.18s linear, transform 0.2s;
+}
+
+#rejectBtn:hover {
+  transform: scale(1.07);
+}
+
+.tiny-reject {
+  transform: scale(0.55) !important;
+  padding: 8px 14px !important;
+  font-size: 11px !important;
+}
+
+/* Music */
+.music-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 9999;
+  background: white;
+  color: #ff4f8b;
+}
+
+/* Sections */
+.game-panel,
+.teddy-section,
+.letter-box {
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.score-box {
+  display: flex;
+  justify-content: space-around;
+  margin: 12px 0;
+}
+
+#startGameBtn {
+  background: #ff4f8b;
+  color: white;
+}
+
+#gameArea {
+  position: relative;
+  margin-top: 14px;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.game-heart {
+  position: absolute;
+  top: -40px;
+  font-size: 30px;
+  cursor: pointer;
+  animation: fall 3s linear forwards;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+@keyframes fall {
+  to {
+    top: 210px;
+  }
+}
+
+/* Teddy tap game */
+.hug-area {
+  height: 130px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#teddy,
+#hugHeart,
+#envelope {
+  background: transparent;
+  font-size: 56px;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+#teddy {
+  animation: bounce 1.2s infinite alternate;
+}
+
+#teddy.selected {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.15);
+}
+
+#hugHeart {
+  transition: 0.3s;
+}
+
+#hugHeart.hugged {
+  transform: scale(1.4);
+  filter: drop-shadow(0 0 20px white);
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-10px);
+  }
+}
+
+#hugMsg {
+  min-height: 24px;
+  color: #fff6a9;
+  font-weight: bold;
+}
+
+/* Letter */
+#envelope {
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+/* Popups */
+.popup,
+.letter-popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 20px;
+}
+
+.popup-box,
+.letter {
+  width: 95%;
+  max-width: 440px;
+  background: white;
+  color: #444;
+  padding: 35px;
+  border-radius: 28px;
+  text-align: center;
+  animation: pop 0.45s ease;
+}
+
+.popup-box h2,
+.letter h2 {
+  color: #ff4f8b;
+  margin-bottom: 14px;
+}
+
+.popup-box button,
+.close-btn {
+  background: #ff4f8b;
+  color: white;
+}
+
+.close-btn {
+  float: right;
+  padding: 8px 14px;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.5) rotate(-8deg);
+    opacity: 0;
+  }
+}
+
+/* Mega sorry popup */
+.mega-sorry-popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+  background: radial-gradient(circle, #ff8fc7, #7c3aed, #020617);
+  z-index: 50000;
+}
+
+.mega-sorry-box {
+  width: 95%;
+  max-width: 850px;
+  padding: 45px;
+  border-radius: 35px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  color: white;
+  box-shadow: 0 0 60px rgba(255,255,255,0.45);
+  animation: megaPop 0.6s ease;
+}
+
+.mega-sorry-box h1 {
+  font-size: 56px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 25px white;
+}
+
+.mega-sorry-box p {
+  font-size: 22px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.mega-sorry-box button {
+  background: white;
+  color: #ff4f8b;
+  box-shadow: 0 0 30px white;
+}
+
+@keyframes megaPop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Effects */
+.heart,
+.burst-heart,
+.confetti,
+.trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+.heart {
+  bottom: -50px;
+  font-size: 26px;
+  animation: floatHeart 8s linear forwards;
+}
+
+@keyframes floatHeart {
+  to {
+    transform: translateY(-120vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.burst-heart {
+  font-size: 26px;
+  animation: burst 1.2s ease forwards;
+}
+
+@keyframes burst {
+  to {
+    transform: translate(var(--x), var(--y)) scale(1.8);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  width: 10px;
+  height: 16px;
+  animation: confettiFall 2.5s linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.trail {
+  font-size: 16px;
+  animation: trailFade 0.8s forwards;
+}
+
+@keyframes trailFade {
+  to {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .page {
+    padding: 12px;
+    align-items: flex-start;
+  }
+
+  .card {
+    margin-top: 65px;
+    padding: 24px 18px;
+    max-height: 86vh;
+  }
+
+  .card h1 {
+    font-size: 30px;
+  }
+
+  .card p {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 11px 18px;
+  }
+
+  #rejectBtn {
+    left: 58%;
+    top: 78%;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .music-btn {
+    top: 12px;
+    right: 12px;
+  }
+
+  #gameArea {
+    height: 150px;
+  }
+
+  .mega-sorry-box {
+    padding: 28px 20px;
+  }
+
+  .mega-sorry-box h1 {
+    font-size: 34px;
+  }
+
+  .mega-sorry-box p {
+    font-size: 16px;
+  }
+}
