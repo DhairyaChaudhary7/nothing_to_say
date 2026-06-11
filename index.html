@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I'm Sorry ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="stars"></div>
+  <div class="floating-hearts"></div>
+
+  <button id="musicBtn" class="music-btn">🎵 Music</button>
+
+  <main class="page">
+    <section class="card">
+      <div class="sparkle">✨</div>
+
+      <h1>I'm Really Sorry 🥺❤️</h1>
+
+      <p id="messageText">
+        I know I made a mistake. You mean a lot to me 💕
+      </p>
+
+      <div class="reject-game-box">
+        <h3>Dodge the Reject Game 😂</h3>
+        <p id="attemptCounter">Attempts to reject: 0</p>
+        <p id="rejectFunnyMsg">Try to click reject 😜</p>
+      </div>
+
+      <div class="game-panel">
+        <h3>Catch My Hearts Game 🎮</h3>
+        <p>Catch 15 hearts to unlock extra love!</p>
+
+        <div class="score-box">
+          <span>Score: <b id="score">0</b>/15</span>
+          <span>Time: <b id="time">20</b>s</span>
+        </div>
+
+        <button id="startGameBtn">Start Game 💖</button>
+        <div id="gameArea"></div>
+      </div>
+
+      <div class="teddy-section">
+        <h3>Virtual Teddy Hug 🐻</h3>
+        <p>Tap teddy, then tap heart</p>
+
+        <div class="hug-area">
+          <button id="teddy">🐻</button>
+          <button id="hugHeart">💗</button>
+        </div>
+
+        <p id="hugMsg"></p>
+      </div>
+
+      <div class="letter-box">
+        <button id="envelope">💌</button>
+        <p>Click the letter</p>
+      </div>
+
+      <button id="acceptBtn">Sorry Accepted ❤️</button>
+    </section>
+
+    <button id="rejectBtn">Reject 😤</button>
+  </main>
+
+  <div class="letter-popup" id="letterPopup">
+    <div class="letter">
+      <button class="close-btn" onclick="closeLetter()">×</button>
+      <h2>My Little Apology Letter 💌</h2>
+      <p>
+        I am truly sorry. I never wanted to hurt you.
+        You are special to me, and your smile matters more than my ego.
+        I promise I will try to understand you better, respect your feelings,
+        and make you feel loved every day. ❤️
+      </p>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-box">
+      <h2>Thank You ❤️</h2>
+      <p>
+        You just made my heart happy again 🥹💕<br><br>
+        I promise to do better and always try to make you smile.
+      </p>
+      <button onclick="closePopup()">Aww 💖</button>
+    </div>
+  </div>
+
+  <div class="mega-sorry-popup" id="megaSorryPopup">
+    <div class="mega-sorry-box">
+      <h1>I AM REALLY SORRY 🥺❤️</h1>
+
+      <p>
+        You tried to reject me 100 times 😭<br><br>
+        But my apology is still here with love, care, and a heart full of hope.
+        I know I made a mistake, but I truly want to make things better.
+        Please forgive me this time 💕
+      </p>
+
+      <button id="megaAcceptBtn">Okay, Accepted ❤️</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
