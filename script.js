@@ -17,11 +17,10 @@ const rejectFunnyMsg = document.getElementById("rejectFunnyMsg");
 const megaSorryPopup = document.getElementById("megaSorryPopup");
 const megaAcceptBtn = document.getElementById("megaAcceptBtn");
 
-let rejectCount = 0;
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+const rejectLimit = isMobile ? 5 : 100;
 
-/* Mobile = 5 attempts, Desktop = 100 attempts */
-const rejectLimit =
-  window.innerWidth <= 768 ? 5 : 100;
+let rejectCount = 0;
 let megaSorryShown = false;
 let score = 0;
 let timeLeft = 20;
@@ -76,7 +75,6 @@ setInterval(() => {
   }, 300);
 }, 2600);
 
-/* Accept */
 acceptBtn.addEventListener("click", () => {
   popup.style.display = "flex";
   createFloatingHearts();
@@ -89,13 +87,21 @@ function closePopup() {
 }
 window.closePopup = closePopup;
 
-/* Works for mouse, touch, pen */
+/* Desktop: cursor near button */
+/* Mobile: tap reject button */
 document.addEventListener("pointermove", (e) => {
+  if (isMobile) return;
+
   handleRejectMovement(e.clientX, e.clientY);
   createCursorTrail(e.clientX, e.clientY);
 });
 
-rejectBtn.addEventListener("pointerdown", (e) => {
+rejectBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  moveRejectButton();
+});
+
+rejectBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
   moveRejectButton();
 });
@@ -122,10 +128,11 @@ function moveRejectButton() {
   rejectFunnyMsg.innerText =
     funnyAttemptMessages[rejectCount % funnyAttemptMessages.length];
 
-  if (rejectCount >= rejectLimit && !megaSorryShown) {
+  if (rejectCount >= rejectLimit) {
     megaSorryShown = true;
     megaSorryPopup.style.display = "flex";
     rejectBtn.style.display = "none";
+
     createConfetti();
     createFloatingHearts();
     heartBurst(window.innerWidth / 2, window.innerHeight / 2);
@@ -141,15 +148,22 @@ function moveRejectButton() {
     rejectBtn.innerText = funnyRejectTexts[rejectCount % funnyRejectTexts.length];
   }
 
-  const padding = 25;
-  const maxX = window.innerWidth - rejectBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - rejectBtn.offsetHeight - padding;
+  const padding = 20;
+  const btnWidth = rejectBtn.offsetWidth;
+  const btnHeight = rejectBtn.offsetHeight;
 
-  const safeMaxX = Math.max(padding, maxX);
-  const safeMaxY = Math.max(padding, maxY);
+  const maxX = window.innerWidth - btnWidth - padding;
+  const maxY = window.innerHeight - btnHeight - padding;
 
-  const randomX = Math.random() * (safeMaxX - padding) + padding;
-  const randomY = Math.random() * (safeMaxY - padding) + padding;
+  const randomX = Math.max(
+    padding,
+    Math.random() * (maxX - padding) + padding
+  );
+
+  const randomY = Math.max(
+    padding,
+    Math.random() * (maxY - padding) + padding
+  );
 
   rejectBtn.style.left = randomX + "px";
   rejectBtn.style.top = randomY + "px";
@@ -158,6 +172,7 @@ function moveRejectButton() {
 megaAcceptBtn.addEventListener("click", () => {
   megaSorryPopup.style.display = "none";
   popup.style.display = "flex";
+
   createConfetti();
   createFloatingHearts();
   heartBurst(window.innerWidth / 2, window.innerHeight / 2);
@@ -191,13 +206,29 @@ function startGame() {
 
 function spawnGameHeart() {
   const heart = document.createElement("div");
+
   heart.className = "game-heart";
   heart.innerText = ["❤️", "💕", "💖", "💗"][Math.floor(Math.random() * 4)];
   heart.style.left = Math.random() * (gameArea.clientWidth - 35) + "px";
 
   let clicked = false;
 
-  heart.addEventListener("pointerdown", (e) => {
+  heart.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (clicked) return;
+    clicked = true;
+
+    score++;
+    scoreText.innerText = score;
+
+    heart.style.pointerEvents = "none";
+    heart.remove();
+
+    if (score >= 15) endGame(true);
+  });
+
+  heart.addEventListener("touchstart", (e) => {
     e.preventDefault();
 
     if (clicked) return;
@@ -252,10 +283,10 @@ hugHeart.addEventListener("click", () => {
   hugHeart.classList.add("hugged");
   hugHeart.innerText = "💞";
   hugMsg.innerText = "Teddy hugged your heart 🐻❤️";
+
   heartBurst(window.innerWidth / 2, window.innerHeight / 2);
 });
 
-/* Letter */
 envelope.addEventListener("click", () => {
   letterPopup.style.display = "flex";
 });
@@ -265,7 +296,6 @@ function closeLetter() {
 }
 window.closeLetter = closeLetter;
 
-/* Music */
 musicBtn.addEventListener("click", () => {
   if (!audioStarted) {
     startMusic();
@@ -278,12 +308,12 @@ musicBtn.addEventListener("click", () => {
 
 function startMusic() {
   audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
   oscillator = audioContext.createOscillator();
   gainNode = audioContext.createGain();
 
   oscillator.type = "sine";
   oscillator.frequency.setValueAtTime(432, audioContext.currentTime);
-
   gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
 
   oscillator.connect(gainNode);
@@ -298,17 +328,22 @@ function stopMusic() {
   audioStarted = false;
 }
 
-/* Effects */
 function createFloatingHearts() {
   for (let i = 0; i < 35; i++) {
     const heart = document.createElement("div");
+
     heart.className = "heart";
-    heart.innerText = ["❤️", "💕", "💖", "💗", "💘"][Math.floor(Math.random() * 5)];
+    heart.innerText =
+      ["❤️", "💕", "💖", "💗", "💘"][Math.floor(Math.random() * 5)];
+
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.animationDuration = Math.random() * 3 + 4 + "s";
 
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 8000);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 8000);
   }
 }
 
@@ -317,7 +352,8 @@ function heartBurst(x, y) {
     const heart = document.createElement("div");
 
     heart.className = "burst-heart";
-    heart.innerText = ["❤️", "💕", "💖", "💗", "💘"][Math.floor(Math.random() * 5)];
+    heart.innerText =
+      ["❤️", "💕", "💖", "💗", "💘"][Math.floor(Math.random() * 5)];
 
     heart.style.left = x + "px";
     heart.style.top = y + "px";
@@ -329,7 +365,10 @@ function heartBurst(x, y) {
     heart.style.setProperty("--y", Math.sin(angle) * distance + "px");
 
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1300);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 1300);
   }
 }
 
@@ -342,11 +381,16 @@ function createConfetti() {
     confetti.className = "confetti";
     confetti.style.left = Math.random() * 100 + "vw";
     confetti.style.top = "-20px";
-    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.background =
+      colors[Math.floor(Math.random() * colors.length)];
+
     confetti.style.animationDuration = Math.random() * 1.5 + 1.5 + "s";
 
     document.body.appendChild(confetti);
-    setTimeout(() => confetti.remove(), 3000);
+
+    setTimeout(() => {
+      confetti.remove();
+    }, 3000);
   }
 }
 
@@ -361,5 +405,8 @@ function createCursorTrail(x, y) {
   trail.style.top = y + "px";
 
   document.body.appendChild(trail);
-  setTimeout(() => trail.remove(), 800);
+
+  setTimeout(() => {
+    trail.remove();
+  }, 800);
 }
