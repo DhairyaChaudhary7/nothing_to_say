@@ -18,6 +18,10 @@ const megaSorryPopup = document.getElementById("megaSorryPopup");
 const megaAcceptBtn = document.getElementById("megaAcceptBtn");
 
 let rejectCount = 0;
+
+/* Mobile = 5 attempts, Desktop = 100 attempts */
+const rejectLimit =
+  window.innerWidth <= 768 ? 5 : 100;
 let megaSorryShown = false;
 let score = 0;
 let timeLeft = 20;
@@ -118,7 +122,7 @@ function moveRejectButton() {
   rejectFunnyMsg.innerText =
     funnyAttemptMessages[rejectCount % funnyAttemptMessages.length];
 
-  if (rejectCount >= 100 && !megaSorryShown) {
+  if (rejectCount >= rejectLimit && !megaSorryShown) {
     megaSorryShown = true;
     megaSorryPopup.style.display = "flex";
     rejectBtn.style.display = "none";
